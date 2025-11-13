@@ -1,40 +1,180 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# Thread Builder
+
+A modern web application for creating, previewing, and managing Twitter/X thread content. Convert long-form content into perfectly formatted threads with an intuitive drag-and-drop interface.
+
+## Features
+
+- **Intelligent Thread Splitting**: Automatically converts long-form content (blog posts, articles) into tweet-sized segments (280 characters)
+- **Visual Thread Preview**: See exactly how your thread will look before posting
+- **Drag & Drop Reordering**: Easily rearrange tweets within your thread
+- **Media Support**: Add images and videos to individual tweets
+- **Unsplash Integration**: Search and add images from Unsplash directly
+- **Post or Schedule**: Post immediately or schedule threads for later
+- **Real-time Validation**: Character count validation and error handling
+- **Responsive Design**: Works seamlessly on desktop and mobile devices
+
+## Tech Stack
+
+- **Framework**: Next.js 15 with React 19
+- **Language**: TypeScript (strict mode)
+- **Styling**: Tailwind CSS with shadcn/ui components
+- **Drag & Drop**: @dnd-kit
+- **UI Components**: Radix UI primitives
+- **Icons**: Lucide React
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
+- Node.js 18.x or higher
+- npm, yarn, pnpm, or bun
+
+### Installation
+
+1. Clone the repository:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone <your-repo-url>
+cd thread-builder
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies:
+```bash
+npm install
+```
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+3. Set up environment variables:
+```bash
+cp .env.example .env.local
+```
+Edit `.env.local` and add your API keys (see Environment Variables section below).
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+4. Run the development server:
+```bash
+npm run dev
+```
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+5. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Environment Variables
 
-## Learn More
+Create a `.env.local` file based on `.env.example`:
 
-To learn more about Next.js, take a look at the following resources:
+- **Twitter API Keys**: Required for posting threads to Twitter/X (get from [Twitter Developer Portal](https://developer.twitter.com/))
+- **Unsplash API Key**: Required for image search functionality (get from [Unsplash Developers](https://unsplash.com/developers))
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
+See `.env.example` for the complete list of environment variables.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Usage
 
-## Deploy on Vercel
+1. **Generate Thread**:
+   - Paste your long-form content into the input area
+   - Click "Generate Thread" to automatically split it into tweets
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+2. **Edit & Customize**:
+   - Reorder tweets by dragging and dropping
+   - Add media (images/videos) to individual tweets
+   - Delete unwanted tweets
+   - Edit text directly in the preview
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+3. **Post or Schedule**:
+   - Click "Post Now" to publish immediately
+   - Click "Schedule Post" to set a future date/time
+
+## Project Structure
+
+```
+thread-builder/
+├── components/          # React components
+│   ├── ui/             # Reusable UI components (shadcn/ui)
+│   ├── ImageUploader.tsx
+│   ├── ThreadInput.tsx
+│   └── ThreadPreview.tsx
+├── pages/              # Next.js pages and API routes
+│   ├── api/
+│   │   └── post-thread.ts
+│   ├── _app.tsx
+│   ├── _document.tsx
+│   └── thread-builder.tsx
+├── lib/                # Utility functions
+│   ├── utils.ts
+│   └── threadutils.ts  # Thread splitting logic
+├── styles/             # Global styles
+│   └── globals.css
+└── public/             # Static assets
+```
+
+## Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
+
+## Key Features Explained
+
+### Thread Splitting Algorithm
+
+The application uses an intelligent algorithm to split long-form content:
+- Respects paragraph boundaries
+- Splits by sentences using natural language processing
+- Handles long sentences by finding natural breakpoints (colons, commas, conjunctions)
+- Adds thread numbering (e.g., "1/5 ") automatically
+- Maintains 280-character limit per tweet
+
+### Media Upload
+
+- Supports images: JPEG, PNG, GIF, WEBP
+- Supports videos: MP4, WEBM
+- Maximum file size: 25MB
+- Alt text support for accessibility
+- Preview before uploading
+
+### Drag & Drop
+
+Built with @dnd-kit for smooth, accessible drag-and-drop:
+- Keyboard navigation support
+- Touch device compatibility
+- Visual feedback during dragging
+- Automatic scroll during drag
+
+## Current Limitations
+
+- **Mock Twitter API**: Currently uses a mock API endpoint. Real Twitter API integration is pending.
+- **No Authentication**: User authentication will be added in a future release.
+- **Local Storage**: Threads are not persisted between sessions yet.
+
+## Future Roadmap
+
+- [ ] Real Twitter API integration
+- [ ] User authentication and profiles
+- [ ] Save drafts to database
+- [ ] Thread analytics and insights
+- [ ] Advanced scheduling options
+- [ ] Thread templates
+- [ ] Export threads to various formats
+- [ ] Collaborative thread editing
+- [ ] Dark mode toggle
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## Development Notes
+
+- Uses React 19 concurrent features
+- TypeScript strict mode enabled
+- ESLint configured with Next.js rules
+- Responsive design with Tailwind CSS
+- Accessibility-first component design
+
+## License
+
+[Add your license here]
+
+## Support
+
+For issues and questions, please [open an issue](https://github.com/your-username/thread-builder/issues).
+
+---
+
+Built with ❤️ using Next.js and React
