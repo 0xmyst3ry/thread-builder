@@ -60,7 +60,7 @@ export default function ImageUploader({
   const debounceRef = useRef<number | null>(null);
 
   // derive valid types
-  const validTypes = useMemo(
+  const validTypes = useMemo<readonly string[]>(
     () => (isImage ? VALID_IMAGE_TYPES : VALID_VIDEO_TYPES),
     [isImage]
   );
@@ -73,9 +73,10 @@ export default function ImageUploader({
   }, [previewUrl]);
 
   // clear Unsplash selection when switching back to upload
-  useEffect(() => {
-    if (tab === "upload") setSelectedUnsplash(null);
-  }, [tab]);
+  const handleTabChange = useCallback((next: "upload" | "unsplash") => {
+    setTab(next);
+    if (next === "upload") setSelectedUnsplash(null);
+  }, []);
 
   const fileTooLarge = (file: File) =>
     file.size / (1024 * 1024) > MAX_FILE_MB;
@@ -85,7 +86,7 @@ export default function ImageUploader({
       const file = e.target.files?.[0];
       if (!file) return;
 
-      if (!validTypes.includes(file.type as any)) {
+      if (!validTypes.includes(file.type)) {
         toast({
           title: `Invalid ${type} format`,
           description: isImage
@@ -245,7 +246,7 @@ export default function ImageUploader({
 
         <Tabs
           value={tab}
-          onValueChange={(v: typeof tab) => setTab(v)}
+          onValueChange={(v) => handleTabChange(v as typeof tab)}
           className="w-full mt-2"
           defaultValue="upload"
         >
@@ -278,16 +279,17 @@ export default function ImageUploader({
             {previewUrl && (
               <div className="mt-4">
                 {isImage ? (
+                  // eslint-disable-next-line @next/next/no-img-element -- local blob: preview, can't go through next/image
                   <img
                     src={previewUrl}
                     alt="Preview"
-                    className="max-h-64 max-w-full object-contain rounded-md"
+                    className="max-h-64 max-w-full object-contain rounded-none border-2 border-foreground"
                   />
                 ) : (
                   <video
                     src={previewUrl ?? ""}
                     controls
-                    className="max-h-64 max-w-full rounded-md"
+                    className="max-h-64 max-w-full rounded-none border-2 border-foreground"
                   />
                 )}
               </div>
@@ -331,8 +333,8 @@ export default function ImageUploader({
                     <button
                       key={img.id}
                       type="button"
-                      className={`relative cursor-pointer overflow-hidden rounded-md border-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                        active ? "border-blue-500 ring-2 ring-blue-500" : "border-transparent"
+                      className={`relative cursor-pointer overflow-hidden rounded-none border-2 focus:outline-none focus:ring-2 focus:ring-primary ${
+                        active ? "border-primary ring-2 ring-primary" : "border-foreground"
                       }`}
                       onClick={() => setSelectedUnsplash(img)}
                       aria-pressed={active}

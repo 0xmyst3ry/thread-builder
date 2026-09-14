@@ -73,11 +73,11 @@ const SortableItem = memo(function SortableItem({
 
   return (
     <div ref={setNodeRef} style={style}>
-      <Card className="p-4 bg-white dark:bg-gray-800 shadow-sm border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 transition-colors mb-4">
+      <Card className="p-4 mb-4 transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-brutal-lg">
         <div className="flex items-start gap-3">
           {/* Drag handle + index chip */}
           <div className="flex-shrink-0 flex flex-col items-center select-none">
-            <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-semibold">
+            <div className="w-8 h-8 rounded-full border-2 border-foreground bg-primary flex items-center justify-center text-primary-foreground font-heading font-bold">
               {index + 1}
             </div>
             <button
@@ -87,13 +87,13 @@ const SortableItem = memo(function SortableItem({
               {...attributes}
               {...listeners}
             >
-              <GripVertical className="w-4 h-4 text-gray-400" />
+              <GripVertical className="w-4 h-4 text-muted-foreground" />
             </button>
           </div>
 
           {/* Content */}
           <div className="flex-grow space-y-3">
-            <p className="text-sm text-gray-800 dark:text-gray-200 whitespace-pre-wrap">{thread.text}</p>
+            <p className="text-sm text-foreground whitespace-pre-wrap">{thread.text}</p>
 
             {/* Image */}
             {thread.image?.url && (
@@ -102,7 +102,7 @@ const SortableItem = memo(function SortableItem({
                 <img
                   src={thread.image.url}
                   alt={thread.image.alt || "Tweet image"}
-                  className="rounded-lg max-h-48 w-full object-cover"
+                  className="rounded-none border-2 border-foreground max-h-48 w-full object-cover"
                   loading="lazy"
                 />
                 <Button
@@ -120,7 +120,7 @@ const SortableItem = memo(function SortableItem({
             {/* Video */}
             {thread.video?.url && (
               <div className="relative mt-2">
-                <video src={thread.video.url} controls className="rounded-lg max-h-48 w-full" />
+                <video src={thread.video.url} controls className="rounded-none border-2 border-foreground max-h-48 w-full" />
                 <Button
                   size="sm"
                   variant="destructive"

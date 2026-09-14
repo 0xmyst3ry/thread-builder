@@ -53,8 +53,17 @@ module.exports = {
       },
       borderRadius: {
         lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        md: "var(--radius)",
+        sm: "var(--radius)",
+        xl: "var(--radius)",
+      },
+      boxShadow: {
+        brutal: "4px 4px 0px 0px hsl(var(--foreground))",
+        "brutal-sm": "2px 2px 0px 0px hsl(var(--foreground))",
+        "brutal-lg": "8px 8px 0px 0px hsl(var(--foreground))",
+      },
+      fontFamily: {
+        heading: ["var(--font-heading)", "sans-serif"],
       },
       keyframes: {
         "accordion-down": {

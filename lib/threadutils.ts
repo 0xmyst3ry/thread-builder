@@ -113,7 +113,7 @@ function splitLongSentence(sentence: string): string[] {
     // Try each breakpoint type in order
     for (const breakpoint of breakpoints) {
       // Find all possible split positions
-      const matches = [...remainingSentence.matchAll(new RegExp(breakpoint, 'g'))];
+      const matches = Array.from(remainingSentence.matchAll(new RegExp(breakpoint, 'g')));
       
       if (matches.length > 0) {
         // Find the last match that would result in a chunk <= MAX_TWEET_LENGTH

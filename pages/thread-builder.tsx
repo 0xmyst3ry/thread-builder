@@ -2,17 +2,14 @@
 import { useState } from 'react';
 import Head from 'next/head';
 import ThreadInput from '../components/ThreadInput';
-import ThreadPreview from '../components/ThreadPreview';
+import ThreadPreview, { type Thread } from '../components/ThreadPreview';
+import ThemeToggle from '../components/ThemeToggle';
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 
 // Main Thread Builder Page
 export default function ThreadBuilder() {
-  const [threads, setThreads] = useState<Array<{
-    text: string;
-    image?: { url: string; alt: string; };
-    video?: { url: string; };
-  }>>([]);
+  const [threads, setThreads] = useState<Thread[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
   const [isPosting, setIsPosting] = useState(false);
   const { toast } = useToast();
@@ -75,22 +72,25 @@ export default function ThreadBuilder() {
         <meta name="description" content="Build and schedule your Twitter threads" />
       </Head>
       <div className="container max-w-7xl mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-6">Thread Builder</h1>
-        
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="font-heading text-3xl font-bold uppercase tracking-tight">Thread Builder</h1>
+          <ThemeToggle />
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Left column: Thread Input */}
           <div className="space-y-6">
-            <ThreadInput 
-              setThreads={setThreads} 
+            <ThreadInput
+              setThreads={setThreads}
               isGenerating={isGenerating}
               setIsGenerating={setIsGenerating}
             />
           </div>
-          
+
           {/* Right column: Thread Preview */}
           <div className="space-y-6">
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
-              <h2 className="text-xl font-semibold mb-4">Your Thread Preview</h2>
+            <div className="bg-card text-card-foreground border-2 border-foreground p-6 shadow-brutal">
+              <h2 className="font-heading text-xl font-bold uppercase tracking-tight mb-4">Your Thread Preview</h2>
               
               {threads.length > 0 ? (
                 <>
@@ -119,7 +119,7 @@ export default function ThreadBuilder() {
                   </div>
                 </>
               ) : (
-                <div className="text-center py-12 text-gray-500 dark:text-gray-400">
+                <div className="text-center py-12 text-muted-foreground">
                   <p>Your thread preview will appear here</p>
                 </div>
               )}

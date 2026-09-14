@@ -4,15 +4,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
-import { splitIntoThreads } from '@/lib/threadUtils';
+import { splitIntoThreads } from '@/lib/threadutils';
 import { useToast } from "@/components/ui/use-toast";
+import type { Thread } from "@/components/ThreadPreview";
 
 interface ThreadInputProps {
-  setThreads: React.Dispatch<React.SetStateAction<Array<{
-    text: string;
-    image?: { url: string; alt: string; };
-    video?: { url: string; };
-  }>>>;
+  setThreads: React.Dispatch<React.SetStateAction<Thread[]>>;
   isGenerating: boolean;
   setIsGenerating: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -60,23 +57,17 @@ export default function ThreadInput({ setThreads, isGenerating, setIsGenerating 
     }
   };
 
-  // Handle paste event to allow users to quickly paste content
-  const handlePaste = (e: React.ClipboardEvent) => {
-    // Additional paste handling logic can be added here if needed
-  };
-
   return (
     <Card className="w-full">
       <CardContent className="pt-6">
         <div className="space-y-4">
-          <h2 className="text-xl font-semibold mb-2">Paste your article or blog post</h2>
+          <h2 className="font-heading text-xl font-bold uppercase tracking-tight mb-2">Paste your article or blog post</h2>
           
           <Textarea
             placeholder="Paste your long-form content here. We'll automatically split it into tweet-sized segments..."
             className="min-h-[300px] resize-y"
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            onPaste={handlePaste}
             disabled={isGenerating}
           />
           
