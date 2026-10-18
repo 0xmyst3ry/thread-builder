@@ -1,40 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# Thread Builder
 
-## Getting Started
+Paste a long piece of writing and get it back as a numbered thread of 280-character posts, ready to review, reorder and attach media to.
 
-First, run the development server:
+> **Status: working front end, mock posting.** The "Post Now" and "Schedule Post" buttons call a local API route that only simulates sending (see [What is real and what is mocked](#what-is-real-and-what-is-mocked)). Nothing is sent to X/Twitter.
+
+## What it does
+
+- **Splits text into a thread.** Paragraphs and sentences are kept together where possible, a sentence longer than 280 characters is split further, and posts are numbered `1/5`, `2/5` and so on when there is more than one.
+- **Preview and edit.** Each post is shown as a card. You can delete a post and drag posts into a new order (built with `@dnd-kit`).
+- **Attach media.** Add an image or video to a post, with alt text for accessibility.
+- **Light and dark theme.**
+
+The splitting logic lives in [`lib/threadutils.ts`](lib/threadutils.ts).
+
+## Run it
+
+You need Node.js 20.9 or newer (required by Next.js 16).
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000). It redirects to `/thread-builder`.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+Other scripts:
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+```bash
+npm run lint    # ESLint
+npm run build   # production build
+```
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+## What is real and what is mocked
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Part | State |
+| --- | --- |
+| Splitting long text into 280-character posts | Real |
+| Preview, delete, drag to reorder | Real |
+| Media picker with alt text | Real |
+| `POST /api/post-thread` ("Post Now", "Schedule Post") | **Mock.** It validates the request, waits 0.5 to 1.5 seconds, returns a fake thread ID, and fails about 10% of the time on purpose to exercise error handling |
+| `GET /api/placeholder/[width]/[height]` | Returns a grey SVG placeholder image, capped at 2000 px |
 
-## Learn More
+Connecting a real X API client would mean replacing the mock handler in [`pages/api/post-thread.ts`](pages/api/post-thread.ts) with authenticated calls. That is not done.
 
-To learn more about Next.js, take a look at the following resources:
+## Tech
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
+Next.js (Pages Router), React, TypeScript, Tailwind CSS, Radix UI primitives, `@dnd-kit`, `next-themes`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## License
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+[MIT](LICENSE)
